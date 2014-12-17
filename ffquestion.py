@@ -218,11 +218,7 @@ class ViewQuestion(webapp2.RequestHandler):
             answer.canVoteUp = canVoteUp
             answer.totalVotes = totalVotes
 
-        print question.answers
-
-        question.answers.sort(key=lambda x: x.difference)
-
-        print question.answers
+        question.answers.sort(key=lambda x: x.difference, reverse=True)
 
         upload_url = blobstore.create_upload_url('/upload')
 

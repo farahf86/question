@@ -218,6 +218,10 @@ class ViewQuestion(webapp2.RequestHandler):
             answer.canVoteUp = canVoteUp
             answer.totalVotes = totalVotes
 
+        question.creationDate.strftime('%x %X')
+
+        https://docs.google.com/a/nyu.edu/document/d/1OqJjptD_kvq4QB8ANwublXD4hlVt628t0fC7VOeb9Dk/preview
+
         question.answers.sort(key=lambda x: x.difference, reverse=True)
 
         upload_url = blobstore.create_upload_url('/upload')

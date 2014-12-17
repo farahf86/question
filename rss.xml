@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+	<title>{{ question.title }}</title>
+    <pubdate>{{ question.lastUpdateDate }}</pubdate>
+    <link>{{ question_url }}</link>
+    <description>{{ question.description }}</description>
+    {% for answer in question.answers %}
+        <item>
+        <title>{{ answer.name }}</title>
+        <pubdate>{{ answer.lastUpdateDate }}</pubdate>
+        <link>{{ question_url }}</link>
+        <description>{{ answer.description }}</description>
+        </item>
+    {%endfor%}
+</channel>
+</rss>

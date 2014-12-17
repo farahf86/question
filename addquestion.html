@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+	<head>
+	  <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+	  <link type="text/css" href="/stylesheets/jquery-ui.css" rel="stylesheet" />
+	  <link type="text/css" href="/stylesheets/styles.css" rel="stylesheet" />
+	  <link href="/stylesheets/jquery.tagit.css" rel="stylesheet" type="text/css">
+    	<link href="/stylesheets/tagit.ui-zendesk.css" rel="stylesheet" type="text/css">
+	  <script src="/scripts/jquery.js"></script>
+	  <script src="/scripts/jquery-ui.js"></script>
+	  <script src="/scripts/linkify.js"></script>
+	  <script src="/scripts/tag-it.min.js"></script>
+	</head>
+	<body>
+		{% include 'header.html' %}
+		<div class="main-div">
+			<form id="qForm" action="/createquestion" method="post">
+			  <label>Title &nbsp;&nbsp;</label><input name="title" class="q-title ui-corner-all" type="text" id="title"></input>
+			  <br></br>
+			  <textarea class="q-description ui-corner-all" name="description" id="description" rows="15" cols="104">Enter you question here...</textarea>
+			  <br></br>
+			  <label>Tags &nbsp;&nbsp;</label><ul class="q-title" type="text" name="myTags" id="myTags"></ul>			  
+			 <br>
+			 <div class="regular-button create">
+		        <a href="javascript: submitQuestion()">Create</a>
+		    </div>
+		    <div class="regular-button cancel">
+		        <a href="/">Cancel</a>
+		    </div>
+			</form>
+		</div>
+  		<script type="text/javascript">
+  		var firstTime = true;
+  		$('#myTags').tagit();
+  		$("#description").focus(function()
+  		{
+  			if (firstTime)
+  			{
+  				$(this).val("");
+  				firstTime = false;
+  			}
+  		});
+
+  		function submitQuestion()
+  		{
+  			$("#qForm").submit();
+  		}
+  		</script>
+  	</body>
+</html>
+{% endautoescape %}

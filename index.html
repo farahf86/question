@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+  <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+  <link type="text/css" href="/stylesheets/jquery-ui.css" rel="stylesheet" />
+  <link type="text/css" href="/stylesheets/styles.css" rel="stylesheet" />
+  <script src="/scripts/jquery.js"></script>
+  <script src="/scripts/jquery-ui.js"></script>
+  <script src="/scripts/linkify.js"></script>
+  <script src="/scripts/imagify.js"></script>
+</head>
+  <body>
+    {% include 'header.html' %}
+    <div class="regular-button add">
+        <a href="preparequestion">Ask Question</a>
+    </div>
+    <form action="search">
+    <div style="margin-left: 88px">
+      Search questions by tags <input type="text" name="tag" id="tag"/><input type="button" onclick="search()">Go</input>
+    </div>
+    </div>
+      </form>
+
+    <br>
+    <div id="maindiv" class="main-div">
+
+{% if cursor %}
+    <a class="btn" href="?cursor={{cursor}}">Older</a>
+{% endif %}
+      {% include 'questions.html' %}
+  </div>
+<script type="text/javascript">
+  $('p').linkify();
+
+  
+
+  truncateText();
+  function truncateText() {
+
+    $( "p[name='description']" ).each(function() {
+      if( $(this).text().length > 500)
+        $( this ).text( $(this).text().substr(0,500) + '...' );
+    });
+}
+
+function vote(id, direction)
+{
+  $.ajax({
+    beforeSend : function (XMLHttpRequest)
+    {
+    },
+    url: "/questionvote",
+    type: 'POST',
+    data: {
+      'id' : id,
+      'direction' : direction
+    },
+    success: function( data ) 
+    {
+      console.log($("#vote"+id).text());
+      if (direction == '1')
+      {
+        $("#voteup"+id).removeClass("up").addClass("updisabled");
+      }
+      else
+      {
+        $("#votedown"+id).removeClass("down").addClass("downdisabled");
+      }
+      // $("#"+id+"-vote").html(  parseInt($("#"+id+"-vote").html()) + parseInt(direction) );
+    }
+  });
+}
+
+function search()
+{
+  $.ajax({
+    beforeSend : function (XMLHttpRequest)
+    {
+      $("#maindiv").html("Searching...");
+    },
+    url: "/search",
+    type: 'POST',
+    data: {
+      'tag' : $("#tag").val()
+    },
+    success: function( data ) 
+    {
+      $("#maindiv").html(data);
+    }
+  });
+}
+</script>
+  </body>
+</html>
+{% endautoescape %}
+
+
+
+

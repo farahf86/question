@@ -1,0 +1,217 @@
+
+body
+{
+	font-family: arial,verdana,lucida,sans-serif;
+}
+
+a
+{
+	text-decoration: none;
+}
+
+a:hover
+{
+	text-decoration: underline;
+}
+
+p
+{
+	white-space: pre-wrap;
+}
+
+.welcome
+{
+	 text-align: right;
+}
+
+
+.center
+{
+  width: 463px;
+  display: block;
+  margin: 50px auto 90px auto;
+}
+
+.main-div
+{
+	margin: 0 auto;
+	width: 1100px;
+}
+
+.main-div p
+{
+	margin-left: 8px;
+}
+.question-title 
+{
+	
+	width: 1100px;
+	margin-bottom: 20px;
+	border-bottom: 1px solid #ccc;
+}
+
+.question-title h1
+{
+	margin-bottom: 5px;
+	color: #2D6396;
+}
+
+.question-title a
+{
+	float: right;
+	margin-top: -28px;
+	color: #2D6396;
+}
+
+.question-details
+{
+	width: 728px;
+}
+
+.votecell
+{
+	width: 60px;
+	vertical-align: top;
+}
+
+.vote
+{
+	text-align:center
+}
+
+.vote
+{
+	display: block;
+	width: 30px;
+	height: 24px;
+	
+	background-repeat: no-repeat;
+	cursor:pointer;
+}
+
+.up
+{
+	background-image: url('/images/upvote.png');
+}
+
+.down
+{
+	background-image: url('/images/downvote.png');
+}
+
+.updisabled
+{
+	background-image: url('/images/upvote-disabled.jpg');
+	cursor: default;
+}
+.downdisabled
+{
+	background-image: url('/images/downvote-disabled.jpg');
+	cursor: default;
+}
+.vote-count
+{
+	padding-top: 2px;
+	color: #555;
+}
+
+
+.question-description
+{
+	width: 1000px;
+	margin: 0 5px;
+	line-height: 23px;
+}
+
+.question-description p
+{
+	white-space: pre-wrap;
+}
+
+
+
+.regular-button
+{
+	background: #2D6396;
+	display: block;
+	/*width: 80px;*/
+}
+.add
+{
+	margin-right: 88px;
+	float:right;
+}
+
+.create
+{
+	margin-right: 1025px;
+}
+
+.cancel
+{
+	margin: -30px 928px 0 100px;
+}
+.regular-button a
+{
+	padding: 6px 12px 6px 12px;
+	color: #fff;
+	display: block;
+}
+.regular-button a:hover
+{
+	padding: 6px 12px 6px 12px;
+	color: #F8A13F;
+	display: block;
+}
+
+.creation
+{
+	font-size: 12px;
+	width: 123px;
+	margin-right: 0;
+	float: right;
+	margin-top: -20px;
+}
+
+.edited
+{
+	font-size: 12px;
+	width: 123px;
+	margin-right: 28px;
+	float: right;
+	margin-top: -20px;
+}
+
+.tagit
+{
+	width: 690px !important ;
+	margin-top: -25px;
+	margin-left: 48px !important;
+	border: solid 1px gray !important;
+	font-size: 100% !important;
+}
+.q-title
+{
+	width: 690px;
+	padding: 1px 5px;
+	font-size: 100%;
+	border: solid 1px gray;
+	overflow: auto;
+}
+
+.q-description
+{
+	resize: none;
+	border: solid 1px gray;
+	font-size: 100%;
+}
+
+.image
+{
+	width: 750px;
+}
+
+.pagination li {
+  display:inline-block;
+  padding:5px;
+}

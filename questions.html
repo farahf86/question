@@ -1,0 +1,52 @@
+{% if questions %}
+      <div id="page-{{ numberOfPages }}">
+        {% for question in questions %}
+          <div class="single-question" id="div{{ question.id }}">
+            <div class="question-title">
+              <h1>{{ question.name }}</h1>
+              <a href="viewquestion?id={{ question.id }}" >view</a> 
+            </div>
+            <div class="question-details" >
+              <table>
+                <tbody>
+                  <tr>
+                    <td class="votecell">
+                      <div class="vote">
+                        {% if question.canVoteUp %}
+                          <a id="voteup{{ question.id }}" class="vote up" href="javascript:vote('{{ question.id }}', '1');" ></a>
+                        {% else %}
+                          <a  class="vote updisabled" title="you already voted this" ></a>
+                        {% endif %}
+                        <label id="vote{{ question.id }}" class="vote-count">{{ question.totalVotes }}</label>
+                        {% if question.canVoteDown %}
+                        <a id="votedown{{ question.id }}" class="vote down" href="javascript:vote('{{ question.id }}', '-1');" ></a>
+                        {% else %}
+                        <a  class="vote downdisabled" title="you already voted this" ></a>
+                        {% endif %}
+                      </div>
+                    </td>
+                  
+                    <td>
+                      <div class="question-description">
+                        <p name="description">{{ question.description }}</p>
+                      </div>
+
+                      {% if question.tags %}
+                        <ul class="question-tags">
+                            {% for tag in question.tags %}
+                              <li class="question-tag">{{ tag }}</li>
+                            {% endfor %}
+                        </ul>
+                      {% endif %}
+                      <p class="creation">Created on {{ question.creationDate }} by {{ question.user }}</p>
+                      <p class="edited">Last modified {{ question.lastUpdateDate }}</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+      {% endfor %}
+      {% else %}
+        <p> No Questions yet... </p>
+      {% endif %}

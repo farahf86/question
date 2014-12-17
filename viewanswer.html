@@ -1,0 +1,33 @@
+<div class="single-question">
+            <div class="question-title">
+                  <input name="title" class="q-title ui-corner-all" type="text" id="title{{ answer.id }}" value="{{ answer.name }}"></input>
+            </div>
+            <div class="question-details" >
+              <table>
+                <tbody>
+                  <tr>
+                    <td class="votecell">
+                      <div class="vote">
+                          <a id="voteup{{ answer.id }}" class="vote up" href="javascript:answervote('{{ qid }}', '{{ answer.id }}', '1');" ></a>
+                        <label id="vote{{ answer.id }}" class="vote-count">0</label>
+                        <a id="votedown{{ answer.id }}" class="vote down" href="javascript:answervote('{{ qid }}', '{{ answer.id }}', '-1');" ></a>
+                        
+                      </div>
+                    </td>
+                  
+                    <td>
+                      <div class="question-description">
+                        <textarea class="q-description ui-corner-all" name="description" id="description{{ answer.id }}" rows="15" cols="104">{{ answer.description }}</textarea>
+                      </div>
+<form action="{{ upload_url }}" method="POST" enctype="multipart/form-data">
+          Upload File: <input type="file" name="file">
+          <input type="hidden" name="qid" value="{{ qid }}"/><br> <input type="submit" name="submit" value="Submit"> </form>
+
+                      <p class="creation">Created on {{ answer.creationDate }} by {{ answer.user }}</p>
+                      <p class="edited">Last modified {{ answer.lastUpdateDate }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>

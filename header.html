@@ -1,0 +1,10 @@
+<div class="welcome">
+  {% if user %}
+      Welcome {{ nickname }}. <a href="{{ url }}">Not {{ nickname }}? (Logout)</a>
+  {% else %} 
+      <a href="{{ url }}">Login</a>
+  {% endif %}
+</div>
+<div class="center">
+  <!-- <img src="/images/logo.jpg"/> -->
+</div>

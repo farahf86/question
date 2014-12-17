@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 {% autoescape true %}
-<html>
-	<head>
-	  <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-	  <link type="text/css" href="/stylesheets/jquery-ui.css" rel="stylesheet" />
-	  <link type="text/css" href="/stylesheets/styles.css" rel="stylesheet" />
-	  <link href="/stylesheets/jquery.tagit.css" rel="stylesheet" type="text/css">
-    	<link href="/stylesheets/tagit.ui-zendesk.css" rel="stylesheet" type="text/css">
-	  <script src="/scripts/jquery.js"></script>
-	  <script src="/scripts/jquery-ui.js"></script>
-	  <script src="/scripts/linkify.js"></script>
-	  <script src="/scripts/tag-it.min.js"></script>
-	</head>
+{% include 'head.html' %}
 	<body>
 		{% include 'header.html' %}
 		<div class="main-div">
@@ -22,10 +11,10 @@
 			  <br></br>
 			  <label>Tags &nbsp;&nbsp;</label><ul class="q-title" type="text" name="myTags" id="myTags"></ul>			  
 			 <br>
-			 <div class="regular-button create">
+			 <div class="regular-button space">
 		        <a href="javascript: submitQuestion()">Create</a>
 		    </div>
-		    <div class="regular-button cancel">
+		    <div class="regular-button cancelbtn">
 		        <a href="/">Cancel</a>
 		    </div>
 			</form>

@@ -1,6 +1,5 @@
 {% if questions %}
-      <div id="page-{{ numberOfPages }}">
-        {% for question in questions %}
+       {% for question in questions %}
           <div class="single-question" id="div{{ question.id }}">
             <div class="question-title">
               <h1>{{ question.name }}</h1>

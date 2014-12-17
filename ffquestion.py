@@ -34,8 +34,6 @@ class Answer(ndb.Model):
     description = ndb.TextProperty()
     votes = ndb.StructuredProperty(Vote, repeated=True)
     images = ndb.BlobKeyProperty(repeated=True)
-    _use_memcache = False
-    _use_cache = False
 
 class Question(ndb.Model):
     id = ndb.StringProperty()
@@ -48,8 +46,7 @@ class Question(ndb.Model):
     votes = ndb.StructuredProperty(Vote, repeated=True)
     tags = ndb.StringProperty(repeated=True)
     images = ndb.BlobKeyProperty(repeated=True)
-    _use_memcache = False
-    _use_cache = False
+
 
 # [START main_page]
 class MainPage(webapp2.RequestHandler):
@@ -144,7 +141,8 @@ class CreateQuestion(webapp2.RequestHandler):
 
         question.put()
 
-        self.redirect('/');
+        time.sleep(1)
+        self.redirect('/viewquestion?id=%s' % question.id)
 
 class ViewQuestion(webapp2.RequestHandler):
 
@@ -163,7 +161,26 @@ class ViewQuestion(webapp2.RequestHandler):
 
         question = question_query.fetch()[0]
 
+        canVoteUp = True
+        canVoteDown = True
+        totalVotes = 0
+
+        for vote in question.votes:
+            totalVotes += vote.direction
+
+            if vote.user == user and vote.direction == 1:
+                canVoteUp = False
+
+            if vote.user == user and vote.direction == -1:
+                canVoteDown = False
+
+        question.totalVotes = totalVotes
+        question.canVoteDown = canVoteDown
+        question.canVoteUp = canVoteUp
+
         creator = True
+        
+
         if question.user != user:
             creator = False
 
@@ -201,7 +218,11 @@ class ViewQuestion(webapp2.RequestHandler):
             answer.canVoteUp = canVoteUp
             answer.totalVotes = totalVotes
 
+        print question.answers
+
         question.answers.sort(key=lambda x: x.difference)
+
+        print question.answers
 
         upload_url = blobstore.create_upload_url('/upload')
 
@@ -235,14 +256,15 @@ class CreateAnswer(webapp2.RequestHandler):
         answer.id = currentTime
         answer.name = self.request.get('title')
         answer.description = self.request.get('description')
-
+        answer.creator = True
+        answer.totalVotes = 0
         answer.put()
         question.answers.append(answer)
         question.put()
 
         template_values = {
             'answer': answer,
-            'qid' : self.request.get('qid'),
+            'question' : question,
             'upload_url': upload_url
         }
 
@@ -253,12 +275,26 @@ class EditQuestion(webapp2.RequestHandler):
 
     def post(self):
 
-        question_query = Question.query(Question.id == self.request.get('id'))
+        question_query = Question.query(Question.id == self.request.get('qid'))
         question = question_query.fetch()[0]
 
         question.name = self.request.get('title')
         question.description = self.request.get('description')
         question.tags = self.request.get_all('tags')
+
+        question.put()
+
+class EditAnswer(webapp2.RequestHandler):
+
+    def post(self):
+
+        question_query = Question.query(Question.id == self.request.get('qid'))
+        question = question_query.fetch()[0]
+
+        for answer in question.answers:
+            if answer.id == self.request.get('aid'):
+                answer.name = self.request.get('title')
+                answer.description = self.request.get('description')
 
         question.put()
 
@@ -377,6 +413,7 @@ class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
     question.put()
 
+    time.sleep(1)
     self.redirect('/viewquestion?id=%s' % self.request.get('qid'))
 
 class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
@@ -394,6 +431,7 @@ application = webapp2.WSGIApplication([
     ('/viewquestion', ViewQuestion),
     ('/createanswer', CreateAnswer),
     ('/editquestion', EditQuestion),
+    ('/editanswer', EditAnswer),
     ('/questionvote', QuestionVote),
     ('/answervote', AnswerVote),
     ('/search', Search),

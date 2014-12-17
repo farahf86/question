@@ -1,6 +1,17 @@
-<div class="single-question">
-            <div class="question-title">
-                  <input name="title" class="q-title ui-corner-all" type="text" id="title{{ answer.id }}" value="{{ answer.name }}"></input>
+          <div class="single-question">
+            <form id="aForm{{ answer.id }}" action="/editanswer" method="post">
+              <input type="hidden" name="qid" value="{{ question.id }}"/>
+          <input type="hidden" name="aid" value="{{ answer.id }}"/>
+            
+              
+              {% if answer.creator %}
+              <div class="answer-title">
+          <input name="title" class="q-title ui-corner-all" type="text" id="title{{ answer.id }}" value="{{ answer.name }}"></input>
+        {% else %}
+        <div class="question-title">
+          <h1>{{ answer.name }}</h1>
+        {% endif %}
+              
             </div>
             <div class="question-details" >
               <table>
@@ -8,26 +19,70 @@
                   <tr>
                     <td class="votecell">
                       <div class="vote">
-                          <a id="voteup{{ answer.id }}" class="vote up" href="javascript:answervote('{{ qid }}', '{{ answer.id }}', '1');" ></a>
-                        <label id="vote{{ answer.id }}" class="vote-count">0</label>
-                        <a id="votedown{{ answer.id }}" class="vote down" href="javascript:answervote('{{ qid }}', '{{ answer.id }}', '-1');" ></a>
-                        
-                      </div>
+
+                        {% if answer.canVoteUp %}
+                          <a id="voteup{{ answer.id }}" class="vote up" href="javascript:answervote('{{ question.id }}', '{{ answer.id }}', '1');" ></a>
+                        {% else %}
+                          <a  class="vote updisabled" title="you already voted this" ></a>
+                        {% endif %}
+                        <label id="vote{{ answer.id }}" class="vote-count">{{ answer.totalVotes }}</label>
+                        {% if answer.canVoteDown %}
+                        <a id="votedown{{ answer.id }}" class="vote down" href="javascript:answervote('{{ question.id }}', '{{ answer.id }}', '-1');" ></a>
+                        {% else %}
+                        <a  class="vote downdisabled" title="you already voted this" ></a>
+                        {% endif %}
                     </td>
                   
                     <td>
                       <div class="question-description">
-                        <textarea class="q-description ui-corner-all" name="description" id="description{{ answer.id }}" rows="15" cols="104">{{ answer.description }}</textarea>
+                        {% if answer.creator %}
+                          <textarea class="q-description ui-corner-all" name="description" id="description{{ answer.id }}" rows="15" cols="104">{{ answer.description }}</textarea>
+                        {% else %}
+                <p name="description">{{ answer.description }}</p>
+             {% endif %}
                       </div>
-<form action="{{ upload_url }}" method="POST" enctype="multipart/form-data">
-          Upload File: <input type="file" name="file">
-          <input type="hidden" name="qid" value="{{ qid }}"/><br> <input type="submit" name="submit" value="Submit"> </form>
 
-                      <p class="creation">Created on {{ answer.creationDate }} by {{ answer.user }}</p>
-                      <p class="edited">Last modified {{ answer.lastUpdateDate }}
+                       
+
+                      {% for image in answer.images %}
+            <img  class="image"  src="/serve/{{ image }}"/>
+            {% endfor %}
+
+            <p class="creation">Created on {{ answer.creationDate }} by {{ answer.user }}</p>
+                      <p class="edited">Last modified {{ answer.lastUpdateDate }}</p>
+
+            <br>
+          </form>
+          {% if answer.creator %}
+               <form id="aFormupload{{ answer.id }}" action="{{ upload_url }}" method="POST" enctype="multipart/form-data">
+                Upload File: <input type="file" name="file">
+                <input type="hidden" name="qid" value="{{ question.id }}"/>
+                <input type="hidden" name="aid" value="{{ answer.id }}"/>
+                <div class="regular-button ">
+                  <a href="javascript: upload('aFormupload{{ answer.id }}')">Upload image</a>
+                </div>  
+              </form>
+            <br><br>
+
+            {% endif %}
+                      
                     </td>
                   </tr>
+                  {% if answer.creator %}
+                  <tr>
+                    <td class="vote">
+                    </td>
+                    <td>
+                      <div class="regular-button ">
+                  <a href="javascript: editAnswer('{{ answer.id }}')">Save Answer</a>
+              </div>
+              <img class="loadingimage" id="loadingimage{{ answer.id}}" src="images/ajax-loader.gif"/>
+              <label class="saved" id="saved{{ answer.id }}">Saved...</label>
+                    </td>
+                  </tr>
+                  {% endif %}
                 </tbody>
               </table>
+          
             </div>
           </div>

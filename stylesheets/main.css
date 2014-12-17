@@ -50,7 +50,7 @@ p
 	border-bottom: 1px solid #ccc;
 }
 
-.question-title h1
+ h1
 {
 	margin-bottom: 5px;
 	color: #2D6396;
@@ -132,13 +132,65 @@ p
 
 .regular-button
 {
-	background: #2D6396;
-	display: block;
-	/*width: 80px;*/
+	min-width: 70px;
+	max-width: 250px;
+
+	background: #347BFF;
+
+	height: 26px;
+	color: white;
+	text-align: center;
+	display: inline-block;
+	min-width: 70px;
+	padding: 0px 5px 0px 5px;
+	border: 0;
+	cursor: pointer;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #2D6396;
+	font-weight: normal;
+	vertical-align: middle;
+	white-space: nowrap;
+	font-size: 14px;
+	line-height: 27px;
+	font-family: Arial;
+
+}
+
+
+.regular-button a
+{
+	color: white;
+	padding: 0 8px;
+}
+
+.wrap-buttons
+{
+	height: 22px;
+float: right;
+margin-top: -30px;
+margin-right: 3px;
+}
+
+.fleft
+{
+	float: left;
+}
+
+.fright
+{
+	float: right;
 }
 .add
 {
 	margin-right: 88px;
+	float:right;
+}
+
+.answer
+{
+	margin-right: 315px;
 	float:right;
 }
 
@@ -151,35 +203,34 @@ p
 {
 	margin: -30px 928px 0 100px;
 }
-.regular-button a
+/*.regular-button a
 {
 	padding: 6px 12px 6px 12px;
 	color: #fff;
 	display: block;
-}
-.regular-button a:hover
+}*/
+/*.regular-button a:hover
 {
 	padding: 6px 12px 6px 12px;
 	color: #F8A13F;
 	display: block;
-}
+}*/
 
 .creation
 {
 	font-size: 12px;
 	width: 123px;
 	margin-right: 0;
-	float: right;
-	margin-top: -20px;
+	/*float: right;
+	margin-top: -20px;*/
 }
 
 .edited
 {
 	font-size: 12px;
 	width: 123px;
-	margin-right: 28px;
-	float: right;
-	margin-top: -20px;
+	margin-left: 182px !important;
+	margin-top: -55px;
 }
 
 .tagit
@@ -192,7 +243,7 @@ p
 }
 .q-title
 {
-	width: 690px;
+	width: 777px;
 	padding: 1px 5px;
 	font-size: 100%;
 	border: solid 1px gray;
@@ -214,4 +265,42 @@ p
 .pagination li {
   display:inline-block;
   padding:5px;
+}
+
+.question-tags
+{
+	margin-top: 5px;
+margin-left: 10px !important;
+}
+
+.single-question
+{
+	padding-bottom: 15px;
+}
+
+.questiondiv
+{
+	width: 1100px;
+	margin-bottom: 20px;
+	border-bottom: 1px solid #ccc;
+}
+
+.space
+{
+	margin-right: 10px;
+}
+
+.cancelbtn
+{
+	background-color: gray;
+}
+
+.loading{background:white; /*border:1px solid #ccc;*/ position:relative; height:500px; padding:40px 0 20px 0; margin-top:3px; text-align:center; width:100%; float:left}
+.loading div{font-size:18px; color:#333}
+
+.answer-title 
+{
+	
+	width: 1100px;
+	margin-bottom: 20px;
 }

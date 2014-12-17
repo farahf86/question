@@ -1,143 +1,148 @@
 <!DOCTYPE html>
 {% autoescape true %}
-<html>
-	<head>
-	  <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-	  <link type="text/css" href="/stylesheets/jquery-ui.css" rel="stylesheet" />
-	  <link type="text/css" href="/stylesheets/styles.css" rel="stylesheet" />
-	  <link href="/stylesheets/jquery.tagit.css" rel="stylesheet" type="text/css">
-    	<link href="/stylesheets/tagit.ui-zendesk.css" rel="stylesheet" type="text/css">
-	  <script src="/scripts/jquery.js"></script>
-	  <script src="/scripts/jquery-ui.js"></script>
-	  <script src="/scripts/linkify.js"></script>
-	  <script src="/scripts/tag-it.min.js"></script>
-	</head>
+{% include 'head.html' %}
+
 	<body>
 		{% include 'header.html' %}
-		<div class="regular-button add">
+		
+		<div id="mainDiv" class="main-div">
+			
+			<div id="questiondiv" class="questiondiv">
+			<div class="regular-button answer">
+
         <a href="javascript:prepareAnswer();">Answer</a>
     </div>
-		<div id="mainDiv" class="main-div">
-			<form id="qForm" action="/editquestion" method="post">
-				<a href="/export?id={{ question.id }}">export</a>
-				<input type="hidden" name="id" id="id" value="{{ question.id }}"/>
-			  <label>Title &nbsp;&nbsp;</label>
-			  {% if creator %}
-			  	<input name="title" class="q-title ui-corner-all" type="text" id="title" value="{{ question.name }}"></input>
-			  {% else %}
-			  	<p>  {{ question.name }} </p>
-			  {% endif %}
-			  <br></br>
-			  {% if creator %}
-			  	<textarea class="q-description ui-corner-all" name="description" id="description" rows="15" cols="104">{{ question.description }}</textarea>
-			  {% else %}
-			  	<p >{{ question.description }}</p>
-			  {% endif %}
-			  <br></br>
-			  <label>Tags &nbsp;&nbsp;</label>
-			  <ul class="q-title" type="text" name="myTags" id="myTags">
-			  	{% for tag in question.tags %}
-			  	<li>{{ tag }} </li>
-			  	{% endfor %}
-			  	<!-- {{ question.tags|safe }} -->
-			  </ul>	
 
-			  {% for image in question.images %}
-			  <img class="image" src="/serve/{{ image }}"/>
-			  {% endfor %}
-			  
-			  <p class="">Created on {{ question.creationDate }} by {{ question.user }}</p>
-                      <p class="">Last modified {{ question.lastUpdateDate }}</p>
-			  <div class="regular-button create">
-		        <a href="javascript: submitQuestion()">Create</a>
-		    </div>
-		    <div class="regular-button cancel">
+   <div class="regular-button fright space">
+
+        <a href="/export?id={{ question.id }}">Export</a>
+    </div> 
+
+    <div class="regular-button fright cancelbtn space">
 		        <a href="/">Cancel</a>
 		    </div>
-			</form>
-		  <form action="{{ upload_url }}" method="POST" enctype="multipart/form-data">
-    			Upload File: <input type="file" name="file">
-    			<input type="hidden" name="qid" value="{{ question.id }}"/><br> <input type="submit" name="submit" value="Submit"> </form>
+			<h1>Question</h1>
+			<br>
+			<form id="qForm" action="/editquestion" method="post">
+				<input type="hidden" id="questioncreator" value="{{ creator }}"/>
+				<input type="hidden" name="qid" id="qid" value="{{ question.id }}"/>
+				<div class="answer-title">
 
-
-			 <br>
-
-			 {% if question.answers %}
-        {% for answer in question.answers %}
-          <div class="single-question">
-            <div class="question-title">
-            	{% if answer.creator %}
-			  	<input name="title" class="q-title ui-corner-all" type="text" id="title{{ answer.id }}" value="{{ answer.name }}"></input>
-			  {% else %}
-			  	<h1>{{ answer.name }}</h1>
-			  {% endif %}
-              
-            </div>
-            <div class="question-details" >
+					{% if creator %}
+						<input name="title" class="q-title ui-corner-all" type="text" id="title{{ question.id }}" value="{{ question.name }}"></input>
+					{% else %}
+	              		<h1>{{ question.name }}</h1>
+	              	{% endif %}
+	            </div>
+				<div class="question-details" >
               <table>
                 <tbody>
                   <tr>
                     <td class="votecell">
                       <div class="vote">
-                        {% if answer.canVoteUp %}
-                          <a id="voteup{{ answer.id }}" class="vote up" href="javascript:answervote('{{ question.id }}', '{{ answer.id }}', '1');" ></a>
+                        {% if question.canVoteUp %}
+                          <a id="voteup{{ question.id }}" class="vote up" href="javascript:vote('{{ question.id }}', '1');" ></a>
                         {% else %}
                           <a  class="vote updisabled" title="you already voted this" ></a>
                         {% endif %}
-                        <label id="vote{{ answer.id }}" class="vote-count">{{ answer.totalVotes }}</label>
-                        {% if answer.canVoteDown %}
-                        <a id="votedown{{ answer.id }}" class="vote down" href="javascript:answervote('{{ question.id }}', '{{ answer.id }}', '-1');" ></a>
+                        <label id="vote{{ question.id }}" class="vote-count">{{ question.totalVotes }}</label>
+                        {% if question.canVoteDown %}
+                        <a id="votedown{{ question.id }}" class="vote down" href="javascript:vote('{{ question.id }}', '-1');" ></a>
                         {% else %}
                         <a  class="vote downdisabled" title="you already voted this" ></a>
                         {% endif %}
+                      </div>
                     </td>
                   
                     <td>
                       <div class="question-description">
-                       	{% if answer.creator %}
-                        	<textarea class="q-description ui-corner-all" name="description" id="description{{ answer.id }}" rows="15" cols="104">{{ answer.description }}</textarea>
-                        {% else %}
-						  	<p name="description">{{ answer.description }}</p>
-						 {% endif %}
+                      	{% if creator %}
+                      	<textarea class="q-description ui-corner-all" name="description" id="description" rows="15" cols="104">{{ question.description }}</textarea>
+                      	{% else %}
+                        	<p name="description">{{ question.description }}</p>
+                        {% endif %}
                       </div>
-
-                       
-
-                      {% for image in answer.images %}
-					  <img  class="image"  src="/serve/{{ image }}"/>
+                     <br>
+                      {% if question.tags %}
+                      <label>Tags &nbsp;&nbsp;</label>
+                        <ul class="q-title" type="text" name="myTags" id="myTags">
+						  	{% for tag in question.tags %}
+						  	<li>{{ tag }} </li>
+						  	{% endfor %}
+						  </ul>	
+                      {% endif %}
+<br>
+                      {% for image in question.images %}
+					  <img class="image" src="/serve/{{ image }}"/>
 					  {% endfor %}
 
-					{% if answer.creator %}
-					  <form action="{{ upload_url }}" method="POST" enctype="multipart/form-data">
-		    			Upload File: <input type="file" name="file">
-		    			<input type="hidden" name="qid" value="{{ question.id }}"/>
-		    			<input type="hidden" name="aid" value="{{ answer.id }}"
-		    			<br> <input type="submit" name="submit" value="Submit"> </form>
-		    		{% endif %}
-                      <p class="creation">Created on {{ answer.creationDate }} by {{ answer.user }}</p>
-                      <p class="edited">Last modified {{ answer.lastUpdateDate }}
+                      <p class="creation">Created on {{ question.creationDate }} by {{ question.user }}</p>
+                      <p class="edited">Last modified {{ question.lastUpdateDate }}</p>
                     </td>
                   </tr>
-                </tbody>
-              </table>
+              
             </div>
-          </div>
-        {% endfor %}
-      {% endif %}
+				
+				
+                      </form>
+                      {% if creator %}
+<tr>
+	<td class="votecell"></td>
+	<td>
+		<br>
+                 <form id="qFormupload" action="{{ upload_url }}" method="POST" enctype="multipart/form-data">
+    			Upload File: <input type="file" name="file">
+    			<input type="hidden" name="qid" value="{{ question.id }}"/>
+    			<div class="regular-button ">
+    				<a href="javascript: upload('qFormupload')">Upload image</a>
+    			</div>  </form>
+<br>
+			  <div class="regular-button ">
+		        <a href="javascript: submitQuestion()">Save Question</a>
+		    </div>
+		    
+		    <img class="loadingimage" id="loadingimage" src="images/ajax-loader.gif"/>
+		    <label class="saved" id="saved">Saved...</label>
+			<br></br>
+		</td>
+	</tr>
+	{% endif %}
+			  </tbody>
+              </table>
+		</div>
 
-			 
+		<h1>Answers</h1>
+			 {% if question.answers %}
+
+        {% for answer in question.answers %}
+        	{% include 'viewanswer.html' %}
+        {% endfor %}
+        {% else %}
+        <p id="noanswer"> No one has answered this yet...</p>
+      {% endif %}
 		</div>
   		<script type="text/javascript">
 
-  		$("#myTags").tagit();
+  		$(".loadingimage").hide();
+  		$(".saved").hide();
+
+  		var isCreator = $("#questioncreator").val();
+  		
+  		if (  isCreator == 'True' )
+  			$("#myTags").tagit();
+  		else
+  			$("#myTags").tagit({
+				readOnly: true
+		  	
+		  });
+
   		$('p').linkify();
-  		function submitQuestion()
-  		{
-  			$("#qForm").submit();
-  		}
+
 
   		function prepareAnswer()
   		{
+
+  			$("#noanswer").remove();
   			var random = new Date().getTime();
   			var answerHtml = "";
   			answerHtml += '<div id="div' + random + '" class="main-div">';
@@ -147,13 +152,16 @@
 			answerHtml += '<br></br>';
 			answerHtml += '<textarea class="q-description ui-corner-all" name="description" id="description" rows="15" cols="104"></textarea>';
 			answerHtml += '<br></br>';
-			answerHtml += '<div class="regular-button create">';
-		    answerHtml += '<a href="javascript: submitAnswer('+random+')">Create</a>';
+			answerHtml += '<div class="regular-button space ">';
+		    answerHtml += '<a href="javascript: submitAnswer(\'' + random +'\')">Create</a>';
 		    answerHtml += '</div>';
-		   	answerHtml += '<div class="regular-button cancel">';
-		    answerHtml += '<a href="javascript:cancelAnswer('+ random +');">Cancel</a></div></form></div>';
+		   	answerHtml += '<div class="regular-button cancelbtn">';
+		    answerHtml += '<a href="javascript: cancelAnswer(\'' + random +'\')">Cancel</a>';
+		    answerHtml += '</div>';
+		    answerHtml += '</form></div>';
 		    answerHtml += "<br>";
 		    $("#mainDiv").append(answerHtml);
+		    $("body").animate({ scrollTop: $(document).height() }, "slow");
 
   		}
 
@@ -177,7 +185,28 @@
 	          success: function( data ) 
 	          {
 	            $('#div'+id).html(data);
-	            
+	            $(".loadingimage").hide();
+  				$(".saved").hide();
+	          }
+	        });
+  		}
+
+		function editAnswer(id)
+  		{
+  			var serialized = $(document.getElementById( 'aForm'+id ) ).serialize();
+
+  			$.ajax({
+	          beforeSend : function (XMLHttpRequest)
+	          {
+	          	$(document.getElementById( 'loadingimage'+id ) ).show();
+	          },
+	          url: "/editanswer",
+	          type: 'POST',
+	          data: serialized,
+	          success: function( data ) 
+	          {
+	            $(document.getElementById( 'loadingimage'+id ) ).hide();
+	            $(document.getElementById( 'saved'+id ) ).fadeIn().delay(2000).fadeOut();
 	          }
 	        });
   		}
@@ -185,23 +214,25 @@
   		 function submitQuestion()
   		{
   			var serialized = $("#qForm").serialize();
-
   			$.ajax({
 	          beforeSend : function (XMLHttpRequest)
 	          {
+	          	$("#loadingimage").show();
 	          },
 	          url: "/editquestion",
 	          type: 'POST',
 	          data: serialized,
 	          success: function( data ) 
 	          {
-	            
+	            $("#loadingimage").hide();
+	            $("#saved").fadeIn().delay(2000).fadeOut();
 	          }
 	        });
   		}
 
   		function vote(id, direction)
 		{
+
 		  $.ajax({
 		    beforeSend : function (XMLHttpRequest)
 		    {
@@ -216,13 +247,15 @@
 		    {
 		      if (direction == '1')
 		      {
-		        $("#voteup"+id).removeClass("up").addClass("updisabled");
+		        $(document.getElementById( 'voteup'+id ) ).removeClass("up").addClass("updisabled");
 		      }
 		      else
 		      {
-		        $("#votedown"+id).removeClass("down").addClass("downdisabled");
+		        $(document.getElementById( 'votedown'+id ) ).removeClass("down").addClass("downdisabled");
 		      }
-		      $("#"+id+"-vote").html(  parseInt($("#"+id+"-vote").html()) + parseInt(direction) );
+
+		      var old =  parseInt($(document.getElementById( 'vote'+id ) ).text());
+      		  $(document.getElementById( 'vote'+id )).text( old + parseInt(direction) );
 		    }
 		  });
 		}
@@ -244,15 +277,22 @@
 		    {
 		      if (direction == '1')
 		      {
-		        $("#voteup"+id).removeClass("up").addClass("updisabled");
+		        $(document.getElementById( 'voteup'+id ) ).removeClass("up").addClass("updisabled");
 		      }
 		      else
 		      {
-		        $("#votedown"+id).removeClass("down").addClass("downdisabled");
+		        $(document.getElementById( 'votedown'+id ) ).removeClass("down").addClass("downdisabled");
 		      }
-		      $("#"+id+"-vote").html(  parseInt($("#"+id+"-vote").html()) + parseInt(direction) );
+		      
+		      var old =  parseInt($(document.getElementById( 'vote'+id ) ).text());
+      		 $(document.getElementById( 'vote'+id )).text( old + parseInt(direction) );
 		    }
 		  });
+		}
+
+		function upload(id)
+		{
+			$(document.getElementById(id)).submit();
 		}
   		</script>
   	</body>

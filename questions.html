@@ -39,6 +39,8 @@
                       {% endif %}
                       <p class="creation">Created on {{ question.creationDate }} by {{ question.user }}</p>
                       <p class="edited">Last modified {{ question.lastUpdateDate }}</p>
+                      <br>
+                      <p> Permalink <a href="viewquestion?id={{ question.id }}">viewquestion?id={{ question.id }}</a>
                     </td>
                   </tr>
                 </tbody>

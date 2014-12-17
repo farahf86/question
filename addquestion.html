@@ -33,7 +33,8 @@
 
   		function submitQuestion()
   		{
-  			$("#qForm").submit();
+  			if ( $("#title").val() != "" && $("#description").val())
+  				$("#qForm").submit();
   		}
   		</script>
   	</body>

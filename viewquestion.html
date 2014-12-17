@@ -63,14 +63,13 @@
                         {% endif %}
                       </div>
                      <br>
-                      {% if question.tags %}
+                      
                       <label>Tags &nbsp;&nbsp;</label>
                         <ul class="q-title" type="text" name="myTags" id="myTags">
 						  	{% for tag in question.tags %}
 						  	<li>{{ tag }} </li>
 						  	{% endfor %}
 						  </ul>	
-                      {% endif %}
 <br>
                       {% for image in question.images %}
 					  <img class="image" src="/serve/{{ image }}"/>

@@ -77,14 +77,18 @@ class MainPage(webapp2.RequestHandler):
             canVoteDown = True
             totalVotes = 0
 
-            for vote in question.votes:
-                totalVotes += vote.direction
+            if user:
+                for vote in question.votes:
+                    totalVotes += vote.direction
 
-                if vote.user == user and vote.direction == 1:
-                    canVoteUp = False
+                    if vote.user == user and vote.direction == 1:
+                        canVoteUp = False
 
-                if vote.user == user and vote.direction == -1:
-                    canVoteDown = False
+                    if vote.user == user and vote.direction == -1:
+                        canVoteDown = False
+            else:
+                canVoteUp = False
+                canVoteDown = False
 
             question.totalVotes = totalVotes
             question.canVoteDown = canVoteDown
@@ -165,14 +169,18 @@ class ViewQuestion(webapp2.RequestHandler):
         canVoteDown = True
         totalVotes = 0
 
-        for vote in question.votes:
-            totalVotes += vote.direction
+        if user:
+            for vote in question.votes:
+                totalVotes += vote.direction
 
-            if vote.user == user and vote.direction == 1:
-                canVoteUp = False
+                if vote.user == user and vote.direction == 1:
+                    canVoteUp = False
 
-            if vote.user == user and vote.direction == -1:
-                canVoteDown = False
+                if vote.user == user and vote.direction == -1:
+                    canVoteDown = False
+        else:
+            canVoteUp = False
+            canVoteDown = False
 
         question.totalVotes = totalVotes
         question.canVoteDown = canVoteDown
@@ -219,8 +227,6 @@ class ViewQuestion(webapp2.RequestHandler):
             answer.totalVotes = totalVotes
 
         question.creationDate.strftime('%x %X')
-
-        https://docs.google.com/a/nyu.edu/document/d/1OqJjptD_kvq4QB8ANwublXD4hlVt628t0fC7VOeb9Dk/preview
 
         question.answers.sort(key=lambda x: x.difference, reverse=True)
 
@@ -390,7 +396,7 @@ class Export(webapp2.RequestHandler):
         }
 
         self.response.headers['Content-Type'] = 'text/xml'
-        template = JINJA_ENVIRONMENT.get_template('RSS.xml')
+        template = JINJA_ENVIRONMENT.get_template('rss.xml')
         self.response.write(template.render(template_values))
 
 class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):

@@ -341,21 +341,6 @@ class Search(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('questions.html')
         self.response.write(template.render(template_values))
 
-class Export(webapp2.RequestHandler):
-    
-    def get(self):
-
-        question_query = Question.query(Question.id == self.request.get('id'))
-        question = question_query.fetch()[0]
-        
-        template_values = {
-            'question': question,
-            'question_url' : '/viewquestion?id' + question.id
-        }
-
-        self.response.headers['Content-Type'] = 'text/xml'
-        template = JINJA_ENVIRONMENT.get_template('RSS.xml')
-        self.response.write(template.render(template_values))
 
 class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
@@ -399,5 +384,4 @@ application = webapp2.WSGIApplication([
     ('/search', Search),
     ('/upload', UploadHandler),
     ('/serve/([^/]+)?', ServeHandler),
-    ('/export', Export)
 ], debug=True)
